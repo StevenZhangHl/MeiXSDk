@@ -7,7 +7,6 @@ import androidx.multidex.MultiDexApplication;
 import com.meix.doublerecord.net.Url;
 import com.tencent.rtmp.TXLiveBase;
 
-import me.jessyan.retrofiturlmanager.RetrofitUrlManager;
 
 /**
  * @user steven
@@ -21,7 +20,6 @@ public class BaseApp extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        RetrofitUrlManager.getInstance().putDomain(Url.BASE_MEIX_DEV_NAME,Url.BASE_MEIX_DEV);
         String licenceURL = "http://license.vod2.myqcloud.com/license/v1/b278a1ba486c14542421fd8510ffc191/TXLiveSDK.licence"; // 获取到的 licence url
         String licenceKey = "99abe8e04f72ffce96c4bff849f75201"; // 获取到的 licence key
         TXLiveBase.getInstance().setLicence(this, licenceURL, licenceKey);

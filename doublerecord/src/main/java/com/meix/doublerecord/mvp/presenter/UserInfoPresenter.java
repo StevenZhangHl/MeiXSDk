@@ -1,6 +1,7 @@
 package com.meix.doublerecord.mvp.presenter;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.meix.doublerecord.api.ApiRequest;
 import com.meix.doublerecord.entity.BaseEntity;
@@ -85,6 +86,7 @@ public class UserInfoPresenter extends UserInfoContract.Presenter {
 
             @Override
             protected void onSuccess(BaseFaceRecognitionEntity baseFaceRecognitionEntity) {
+                Toast.makeText(mContext, "detectLiveFace:success" + baseFaceRecognitionEntity.isData(), Toast.LENGTH_SHORT).show();
                 if (!baseFaceRecognitionEntity.isData()) {
                     hasFaceSuccess = false;
                     mView.setFaceFail(baseFaceRecognitionEntity.getJsonObject());
@@ -95,7 +97,7 @@ public class UserInfoPresenter extends UserInfoContract.Presenter {
 
             @Override
             protected void onError(String message) {
-
+                Toast.makeText(mContext, "detectLiveFace" + message, Toast.LENGTH_SHORT).show();
             }
         }));
     }
@@ -137,7 +139,7 @@ public class UserInfoPresenter extends UserInfoContract.Presenter {
 
             @Override
             protected void onSuccess(BaseEntity baseEntity) {
-
+                mView.setHasVideoFlowSuccess(true);
             }
 
             @Override
