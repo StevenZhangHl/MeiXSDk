@@ -5,8 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:orientation="vertical"
     tools:context=".MainActivity">
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="客户开始进入双录页面"
+        android:textSize="@dimen/textSize_21"
+        android:layout_marginBottom="@dimen/margin_50"
+        android:layout_height="wrap_content"></TextView>
     <Button
         android:id="@+id/bt_go_video"
         android:layout_width="match_parent"
