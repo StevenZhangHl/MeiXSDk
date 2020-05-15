@@ -1,0 +1,74 @@
+apply plugin: 'com.android.application'
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+    defaultConfig {
+        applicationId "com.meix.meixsdk"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a"
+        }
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        debug {
+            keyAlias 'simu'
+            keyPassword 'simu1234'
+            storeFile file('../doubleRecord.jks')
+            storePassword 'simu1234'
+        }
+
+    }
+    buildTypes {
+        release {
+//            minifyEnabled false  //混淆
+//            shrinkResources true//去掉不用资源
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project.txt'
+        }
+        debug {
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name.equals('release')) {
+            variant.outputs.all { output ->
+                def buildName = "com.doublerecord.sdk"
+                def releaseApkName = buildName + '_' + versionName + '.apk'
+                outputFileName = releaseApkName
+            }
+        } else {
+            variant.outputs.all { output ->
+                def buildName = "com.doublerecord.sdk"
+                def releaseApkName = buildName + '_' + "test" + "_" + versionName + '_' + releaseTime() + '.apk'
+                outputFileName = releaseApkName
+            }
+        }
+    }
+
+    packagingOptions {
+        pickFirst '**/libc++_shared.so'
+        doNotStrip "*/armeabi/libYTCommon.so"
+        doNotStrip "*/armeabi-v7a/libYTCommon.so"
+        doNotStrip "*/x86/libYTCommon.so"
+        doNotStrip "*/arm64-v8a/libYTCommon.so"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+//    implementation project(':doublerecord')
+//    implementation 'com.simu:doublerecord:1.0.1'
+}

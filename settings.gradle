@@ -1,0 +1,2 @@
+include ':app', ':doublerecord'
+rootProject.name='MeiXSDk'

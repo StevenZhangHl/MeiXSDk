@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">DoubleRecord</string>
+    <string name="error_please_check_network">Please check network</string>
+    <string name="loading">Loading</string>
+    <string name="cont_connection_server">无法连接服务器</string>
+    <string name="cont_connection_network">网络无法连接</string>
+    <string name="connection_network_error">Server error</string>
+    <string name="hint_exit">再按一次退出</string>
+    <!--<string name="error_over_count">最多只能选择 %1$d 个图片</string>-->
+    <plurals name="error_over_count">
+        <item quantity="one">最多只能选择 %1$d 个图片</item>
+        <item quantity="many">最多只能选择 %1$d 个图片</item>
+    </plurals>
+    <string name="loading_footer">正在加载</string>
+    <string name="refresh_footer">正在刷新...</string>
+    <string name="loading_fail">加载失败</string>
+    <string name="loading_finish_footer">到底了</string>
+    <string name="disagree">取消</string>
+    <string name="title">投资者双录</string>
+    <string name="tip">请确保本人出现在屏幕中，按照系统提示回复！</string>
+    <string name="normal_explain">本双录系统，将在双录过程中通过人脸识别持续监测本人身份</string>
+    <string name="confirm_text">请再次确认以下信息</string>
+    <string name="return_str">返回</string>
+    <string name="start_video">开始双录</string>
+    <string name="product_name">产品名称：</string>
+    <string name="user_name">您的姓名：</string>
+    <string name="card_type">证件类型：</string>
+    <string name="card_number">证件号码：</string>
+    <string name="video_runnting">人脸持续核验中...</string>
+    <string name="rtc_permisson_error_tip">"用户没有允许需要的权限，加入通话失败"</string>
+    <string name="loading_question_require">加载回答要求信息</string>
+    <string name="checking_question">问答信息AI监测中</string>
+    <string name="answer_error">双录信息不合规</string>
+    <string name="deal_str">我确认：双录时未准确表达自己的意愿，或未被系统准确识别回复，需要重新双录</string>
+    <string name="system_tip">系统提示原因</string>
+    <string name="customer_str">如持续失败，请联系对应客服</string>
+    <string name="face_fail_one_str">人脸持续核验失败！</string>
+    <string name="face_fail_two_str">失败截图（点击可放大查看）</string>
+    <string name="customer_status_str">客服接入状态：</string>
+    <string name="waiting_audit_str">等待材料审核</string>
+    <string name="connect_success_str">接入成功，即将开始</string>
+    <string name="please_handle_idcard_str">请手持身份证正面进行双录！</string>
+</resources>
