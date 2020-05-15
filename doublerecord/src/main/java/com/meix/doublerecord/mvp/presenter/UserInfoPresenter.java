@@ -59,7 +59,7 @@ public class UserInfoPresenter extends UserInfoContract.Presenter {
                     } else if (questionEntity.getStatus().equals("retry")) {
                         mView.setRetryQuestion();
                     } else {
-                        if (questionEntity.getCurrent() == questionEntity.getTotal()) {
+                        if (questionEntity.getCurrent() + 1 == questionEntity.getTotal()) {
                             mView.setAnswerFinish();
                         } else {
                             mView.setQuestionInfoStr("状态：" + "第" + (questionEntity.getCurrent() + 1) + "题，共" + questionEntity.getTotal() + "题");

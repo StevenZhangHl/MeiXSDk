@@ -99,7 +99,7 @@ public class DoubleVideoMainActivity extends BaseActivity<UserInfoPresenter, Use
     private static final int REQ_PERMISSION_CODE = 0x1000;
     private static final int REQUEST_CODE = 101;
     private int mGrantedCount = 0;// 权限个数计数，获取Android系统权限
-    private QuestionEntity mCurrentQutestionEntity;
+    private QuestionEntity mCurrentQuestionEntity;
     private String mUnionCode;
     private long questionStartTime;
     private long questionEndTime;
@@ -249,7 +249,7 @@ public class DoubleVideoMainActivity extends BaseActivity<UserInfoPresenter, Use
 
     @Override
     public void setQuestionInfo(QuestionEntity questionInfo) {
-        mCurrentQutestionEntity = questionInfo;
+        mCurrentQuestionEntity = questionInfo;
         mTvCurrentQuestionNum.setText("问题" + (questionInfo.getCurrent() + 1) + ":");
         mTvQuestionContent.setText(questionInfo.getQuestionContet() + "");
     }
@@ -258,19 +258,21 @@ public class DoubleVideoMainActivity extends BaseActivity<UserInfoPresenter, Use
      * 播放题目音频
      */
     private void playAudio() {
-        mMediaPlayer = MediaPlayer.create(this, Uri.parse(mCurrentQutestionEntity.getFileUrl()));
-        questionStartTime = System.currentTimeMillis();
-        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                questionEndTime = System.currentTimeMillis();
-                answerSeq = String.valueOf(UUID.randomUUID());
-                mPresenter.sendRecordStreamRequest(mUnionCode, questionStartTime, questionEndTime, answerSeq);
-                showDialog();
-                playReplyAudio();
-            }
-        });
-        mMediaPlayer.start();
+        if (mCurrentQuestionEntity != null) {
+            mMediaPlayer = MediaPlayer.create(this, Uri.parse(mCurrentQuestionEntity.getFileUrl()));
+            questionStartTime = System.currentTimeMillis();
+            mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    questionEndTime = System.currentTimeMillis();
+                    answerSeq = String.valueOf(UUID.randomUUID());
+                    mPresenter.sendRecordStreamRequest(mUnionCode, questionStartTime, questionEndTime, answerSeq);
+                    showDialog();
+                    playReplyAudio();
+                }
+            });
+            mMediaPlayer.start();
+        }
     }
 
     /**
@@ -281,7 +283,7 @@ public class DoubleVideoMainActivity extends BaseActivity<UserInfoPresenter, Use
         mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                waitRepayDialog.setQuestionTime(mCurrentQutestionEntity.getAnswerTime());
+                waitRepayDialog.setQuestionTime(mCurrentQuestionEntity.getAnswerTime());
                 waitRepayDialog.setStatus(1);
             }
         });
@@ -295,7 +297,7 @@ public class DoubleVideoMainActivity extends BaseActivity<UserInfoPresenter, Use
         waitRepayDialog.setStartCheckAnswerListener(new WaitRepayDialog.StartCheckAnswerListener() {
             @Override
             public void onStart() {
-                mPresenter.checkAnswer(mUnionCode, mCurrentQutestionEntity.getQuestionId(), answerSeq);
+                mPresenter.checkAnswer(mUnionCode, mCurrentQuestionEntity.getQuestionId(), answerSeq);
             }
         });
         waitRepayDialog.show();
@@ -624,7 +626,7 @@ public class DoubleVideoMainActivity extends BaseActivity<UserInfoPresenter, Use
                 mBtReturn.setVisibility(View.VISIBLE);
                 llReplyFail.setVisibility(View.VISIBLE);
                 tvCustomerTip.setVisibility(View.VISIBLE);
-                String content = "您的【问题" + (mCurrentQutestionEntity.getCurrent() + 1) + "：" + mCurrentQutestionEntity.getQuestionContet() + "】的回复不符合合规要求，请确认相关信息！";
+                String content = "您的【问题" + (mCurrentQuestionEntity.getCurrent() + 1) + "：" + mCurrentQuestionEntity.getQuestionContet() + "】的回复不符合合规要求，请确认相关信息！";
                 SpannableStringBuilder spannable = new SpannableStringBuilder(content);
                 spannable.setSpan(new ForegroundColorSpan(Color.parseColor("#188FFF")), 2, content.length() - 19, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 tvFailQuestion.setText(spannable);
@@ -645,7 +647,7 @@ public class DoubleVideoMainActivity extends BaseActivity<UserInfoPresenter, Use
                 llReplyFail.setVisibility(View.GONE);
                 tvCustomerTip.setVisibility(View.VISIBLE);
                 ll_face_fail.setVisibility(View.VISIBLE);
-                GlideApp.with(mContext)
+                GlideApp.with(this)
                         .load(mFaceRecognitionEntity.getPic_full_url())
                         .into(iv_user_photo);
                 mBtStartVideo.setText("重新双录");
@@ -738,7 +740,7 @@ public class DoubleVideoMainActivity extends BaseActivity<UserInfoPresenter, Use
                 if (PackageManager.PERMISSION_GRANTED == ret) mGrantedCount++;
             }
             if (mGrantedCount == permissions.length) {
-                if (mCurrentQutestionEntity != null) {
+                if (mCurrentQuestionEntity != null) {
                     if (recordingType == 2) {
                         startPush(); //首次启动，权限都获取到，才能正常进入通话
                         playAudio();
@@ -792,7 +794,7 @@ public class DoubleVideoMainActivity extends BaseActivity<UserInfoPresenter, Use
         @Override
         public void run() {
             retryCount++;
-            mPresenter.checkAnswer(mUnionCode, mCurrentQutestionEntity.getQuestionId(), answerSeq);
+            mPresenter.checkAnswer(mUnionCode, mCurrentQuestionEntity.getQuestionId(), answerSeq);
         }
     };
 

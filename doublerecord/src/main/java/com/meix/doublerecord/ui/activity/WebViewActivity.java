@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.ConsoleMessage;
+import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -21,6 +23,7 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -97,6 +100,8 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
         mProgressBar = (ProgressBar) findViewById(R.id.mProgressBar);
         tv_web_title = (TextView) findViewById(R.id.tv_web_title);
         iv_back = (ImageView) findViewById(R.id.iv_back);
+        url = getIntent().getBundleExtra(KeyConstant.URL_BUNDLE_KEY).getString(KeyConstant.URL_KEY);
+        setCookie();
         WebSettings settings = webView.getSettings();
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setJavaScriptEnabled(true);
@@ -151,7 +156,7 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
             }
         });
         webView.addJavascriptInterface(new CommonJsInterface(), "smAndroid");
-        url = getIntent().getBundleExtra(KeyConstant.URL_BUNDLE_KEY).getString(KeyConstant.URL_KEY);
+
         webView.loadUrl(url);
     }
 
@@ -186,6 +191,21 @@ public class WebViewActivity extends BaseActivity implements View.OnClickListene
                 finish();
             }
         }
+    }
+
+    /**
+     * 客户传过来的参数
+     */
+    private int client_id = 1234;
+    /**
+     * 设置cookie
+     */
+    private void setCookie() {
+        CookieManager cookieManager = CookieManager.getInstance();
+        String CookieStr = "client_id=" + client_id;
+        cookieManager.setAcceptCookie(true);
+        cookieManager.setCookie(url, CookieStr);
+        Log.i("webview", cookieManager.getCookie(url));
     }
 
     private class CommonJsInterface {
